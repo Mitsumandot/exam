@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div>
+  <form th:action="@{/emprunt/add}" method="post">
+    <input type="date" name="dateEmprunt" required>
+    <input type="date" name="dateRetourPrevu" required>
+    <select name="user_id" required>
+      <option value="">Choisir utilisateur</option>
+      <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.id}"></option>
+    </select>
+    <button type="submit">Enregister emprunt</button>
+  </form>
+  <table>
+    <thead>
+    <tr>ID</tr>
+    <tr>Date de l'emprunt</tr>
+    <tr>Date de fin de l'emprunt</tr>
+    <tr>Perdu</tr>
+    </thead>
+    <tbody>
+    <tr th:each="e : ${emprunts}">
+      <td th:text="${e.id}"></td>
+      <td th:text="${e.dateEmprunt}"></td>
+      <td th:text="${e.dateRetourPrevu}"></td>
+      <td th:text="(${e.dateRetourPrevu} < ${now}) ? 'Oui' : 'Non'"></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

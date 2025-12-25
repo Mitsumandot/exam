@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <table>
+        <thead>
+        <tr>ID</tr>
+        <tr>Date de l'emprunt</tr>
+        <tr>Date de fin de l'emprunt</tr>
+        <tr>Perdu</tr>
+        </thead>
+        <tbody>
+        <tr th:each="e : ${emprunts}">
+            <td th:text="${e.id}"></td>
+            <td th:text="${e.dateEmprunt}"></td>
+            <td th:text="${e.dateRetourPrevu}"></td>
+            <td th:text="((${e.dateRetourPrevu}) < ${now}) ? 'Oui' : 'Non'"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+</body>
+</html>
