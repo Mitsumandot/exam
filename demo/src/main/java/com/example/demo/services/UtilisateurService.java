@@ -15,7 +15,9 @@ public class UtilisateurService {
         this.utilisateurRepository = utilisateurRepository;
     }
 
-
+    public Utilisateur getUserById(Long id){
+        return utilisateurRepository.findById(id).get();
+    }
 
     public List<Utilisateur> getAllUtilisateurs(){
         return utilisateurRepository.findAll();

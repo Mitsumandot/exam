@@ -38,7 +38,13 @@ public class DataInitializer implements CommandLineRunner {
 
         empruntService.addEmprunt(emprunt);
 
-        System.out.println("User + Emprunt created at startup ✅");
+        Emprunt emprunt2 = new Emprunt();
+        emprunt2.setDateEmprunt(LocalDate.now().minusDays(14));
+        emprunt2.setDateRetourPrevu(LocalDate.now().minusDays(5));
+        emprunt2.setUtilisateur(user);
+
+        empruntService.addEmprunt(emprunt2);
+
     }
 }
 

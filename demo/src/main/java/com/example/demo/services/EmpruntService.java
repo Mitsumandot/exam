@@ -21,10 +21,6 @@ public class EmpruntService implements IEmpruntService {
 
     @Override
     public Emprunt addEmprunt(Emprunt emprunt) {
-        Optional<Emprunt> optionalEmprunt = empruntRepository.findById(emprunt.getId());
-        if(optionalEmprunt.isPresent()){
-            return emprunt;
-        }
         return empruntRepository.save(emprunt);
     }
 
@@ -38,9 +34,12 @@ public class EmpruntService implements IEmpruntService {
         return emprunt;
     }
 
+    public Emprunt findById(Long id){
+        return empruntRepository.findById(id).get();
+    }
     public List<Emprunt> getAllEmprunts(){
         return empruntRepository.findAll();
     }
 
-   
+
 }

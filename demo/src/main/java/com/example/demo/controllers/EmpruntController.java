@@ -48,10 +48,14 @@ public class EmpruntController {
     @PostMapping("/add")
     public String addEmprunt(@RequestParam LocalDate dateEmprunt,
                              @RequestParam LocalDate dateRetourPrevu,
-                             @RequestParam Long user_id){
+                             @RequestParam Long user_id,
+                             @RequestParam(required = false) Long id){
 
-
-        Emprunt emprunt = new Emprunt();
+        Utilisateur utilisateur = utilisateurService.getUserById(user_id);
+        Emprunt emprunt = (id != null) ? empruntService.findById(id) : new Emprunt();
+        if(utilisateur != null){
+            emprunt.setUtilisateur(utilisateur);
+        }
         emprunt.setDateEmprunt(dateEmprunt);
         emprunt.setDateRetourPrevu(dateRetourPrevu);
 
@@ -61,23 +65,43 @@ public class EmpruntController {
 
     }
 
+    @PostMapping("/delete")
+    public String deleteEmprunt(@RequestParam Long id){
+        Emprunt emprunt = empruntService.findById(id);
 
+        emprunt = empruntService.deleteEmprunt(emprunt);
+
+        return "redirect:/emprunt/index";
+    }
 
     @GetMapping("/user/{id}")
     public String userEmpruntList(@PathVariable String id, Model model){
 
+        Long longId = Long.parseLong(id);
+        Utilisateur utilisateur = utilisateurService.getUserById(longId);
 
-
-
+        List<Emprunt> emprunts = empruntService.findEmpruntByUser(utilisateur);
 
         List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
 
-
+        model.addAttribute("emprunts", emprunts);
         model.addAttribute("utilisateurs", utilisateurs);
 
         return "";
 
     }
+
+    @GetMapping("/edit/{id}")
+    public String editPage(@PathVariable Long id, Model model) {
+        Emprunt emprunt = empruntService.findById(id);
+        List<Utilisateur> utilisateurs = utilisateurService.getAllUtilisateurs();
+
+        model.addAttribute("emprunt", emprunt);
+        model.addAttribute("utilisateurs", utilisateurs);
+
+        return "edit_emprunt";
+    }
+
 
 
 }

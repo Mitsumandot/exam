@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Modifier Emprunt</title>
+</head>
+<body>
+<div class="container">
+  <h2>Modifier Emprunt #<span th:text="${emprunt.id}"></span></h2>
+
+  <form th:action="@{/emprunt/add}" method="post">
+    <input type="hidden" name="id" th:value="${emprunt.id}">
+
+    <input type="date" name="dateEmprunt" th:value="${emprunt.dateEmprunt}" required>
+    <input type="date" name="dateRetourPrevu" th:value="${emprunt.dateRetourPrevu}" required>
+
+    <select name="user_id" required>
+      <option th:each="u : ${utilisateurs}"
+              th:value="${u.id}"
+              th:text="${u.nom}"
+              th:selected="${u.id == emprunt.utilisateur.id}">
+      </option>
+    </select>
+
+    <button type="submit">Enregistrer les modifications</button>
+    <a th:href="@{/emprunt/index}">Annuler</a>
+  </form>
+</div>
+</body>
+</html>

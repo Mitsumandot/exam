@@ -2,25 +2,92 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>Title</title>
+  <title>Emprunts</title>
+
+  <style>
+    body {
+      font-family: system-ui, -apple-system, sans-serif;
+      background: #f7f7f7;
+      padding: 30px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 6px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    form {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+    }
+
+    input, select, button {
+      padding: 6px 10px;
+      font-size: 14px;
+    }
+
+    button {
+      cursor: pointer;
+      border: 1px solid #333;
+      background: #fff;
+    }
+
+    button:hover {
+      background: #eee;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+
+    thead {
+      background: #f0f0f0;
+    }
+
+    th, td {
+      padding: 8px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+  </style>
 </head>
+
 <body>
-<div>
+<div class="container">
+
   <form th:action="@{/emprunt/add}" method="post">
     <input type="date" name="dateEmprunt" required>
     <input type="date" name="dateRetourPrevu" required>
+
     <select name="user_id" required>
       <option value="">Choisir utilisateur</option>
-      <option th:each="u : ${utilisateurs}" th:value="${u.id}" th:text="${u.id}"></option>
+      <option th:each="u : ${utilisateurs}"
+              th:value="${u.id}"
+              th:text="${u.nom}">
+      </option>
     </select>
-    <button type="submit">Enregister emprunt</button>
+
+    <button type="submit">Enregistrer emprunt</button>
   </form>
+
   <table>
     <thead>
-    <tr>ID</tr>
-    <tr>Date de l'emprunt</tr>
-    <tr>Date de fin de l'emprunt</tr>
-    <tr>Perdu</tr>
+    <tr>
+      <th>ID</th>
+      <th>Date emprunt</th>
+      <th>Date retour</th>
+      <th>Perdu</th>
+      <th>Modifier</th>
+      <th>Supprimer</th>
+    </tr>
     </thead>
     <tbody>
     <tr th:each="e : ${emprunts}">
@@ -28,10 +95,17 @@
       <td th:text="${e.dateEmprunt}"></td>
       <td th:text="${e.dateRetourPrevu}"></td>
       <td th:text="(${e.dateRetourPrevu} < ${now}) ? 'Oui' : 'Non'"></td>
+      <td><a th:href="@{/emprunt/edit/{id}(id=${e.id})}">Update</a></td>
+      <td>
+        <form th:action="@{/emprunt/delete}" method="post">
+          <input type="hidden" th:value="${e.id}" name="id">
+          <button type="submit">Delete</button>
+        </form>
+      </td>
     </tr>
     </tbody>
   </table>
-</div>
 
+</div>
 </body>
 </html>
